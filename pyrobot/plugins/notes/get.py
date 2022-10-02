@@ -14,9 +14,7 @@ async def get_note_with_command(message, note_name):
     note_message = await message._client.get_messages(
         chat_id=TG_URI, message_ids=note_message_id, replies=0
     )
-    n_m = message
-    if message.reply_to_message:
-        n_m = message.reply_to_message
+    n_m = message.reply_to_message or message
     # 🥺 check two conditions 🤔🤔
     if note_message.media:
         _, file_id = get_file_id(note_message)
@@ -36,9 +34,7 @@ async def get_note_with_command(message, note_name):
             caption = caption.html
         if not caption:
             caption = ""
-        disable_web_page_preview = True
-        if "gra.ph" in caption or "youtu" in caption:
-            disable_web_page_preview = False
+        disable_web_page_preview = "gra.ph" not in caption and "youtu" not in caption
         await n_m.reply_text(
             text=caption,
             disable_web_page_preview=disable_web_page_preview,
