@@ -49,10 +49,7 @@ async def paste_bin(client: Client, message: Message):
 
     json_paste_data = {"content": downloaded_file_name}
 
-    chosen_store = "pasty"
-    if len(message.command) == 2:
-        chosen_store = message.command[1]
-
+    chosen_store = message.command[1] if len(message.command) == 2 else "pasty"
     # get the required pastebin URI
     paste_store_ = paste_bin_store_s.get(chosen_store)
 
@@ -67,8 +64,9 @@ async def paste_bin(client: Client, message: Message):
     # the pastebin sites, respond with only the "key"
     # we need to prepend the BASE_URL of the appropriate site
     paste_store_base_url = (
-        paste_store_base_url_rp.scheme + "://" + paste_store_base_url_rp.netloc
+        f"{paste_store_base_url_rp.scheme}://{paste_store_base_url_rp.netloc}"
     )
+
 
     async with aiohttp.ClientSession() as session:
         response_d = await session.post(
@@ -88,9 +86,9 @@ async def paste_bin(client: Client, message: Message):
         rkp = rk.split(".")
         for kp in rkp:
             pkr = pkr.get(kp)
-    elif not rk:
+    else:
         pkr = pkr[1:]
-    required_url = paste_store_base_url + "/" + pkr
+    required_url = f"{paste_store_base_url}/{pkr}"
 
     kr = paste_store_.get("AVDTS")
     reply_markup = None

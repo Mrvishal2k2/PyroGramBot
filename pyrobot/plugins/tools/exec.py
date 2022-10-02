@@ -19,10 +19,7 @@ async def execution(_, message):
     # PROCESS_RUN_TIME = 100
     cmd = message.text.split(" ", maxsplit=1)[1]
 
-    reply_to_ = message
-    if message.reply_to_message:
-        reply_to_ = message.reply_to_message
-
+    reply_to_ = message.reply_to_message or message
     # start_time = time.time() + PROCESS_RUN_TIME
     process = await asyncio.create_subprocess_shell(
         cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE

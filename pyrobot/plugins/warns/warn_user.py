@@ -54,8 +54,6 @@ async def warn_user(client: PyroBot, msg: Message):
         client.warnsettingsstore[chat_id] = {"WARN_LIMIT": 5, "WARN_MODE": "kick"}
     w_s = client.warnsettingsstore[chat_id]
     w_l = w_s["WARN_LIMIT"]
-    w_m = w_s["WARN_MODE"]
-
     keyboard = InlineKeyboardMarkup(
         [
             [
@@ -77,6 +75,8 @@ async def warn_user(client: PyroBot, msg: Message):
         p_l = DATA[user_id]["limit"]  # previous limit
         nw_l = p_l + 1  # new limit
         if nw_l >= w_l:
+            w_m = w_s["WARN_MODE"]
+
             if w_m == "ban":
                 await msg.chat.ban_member(int(user_id))
                 exec_str = "BANNED"
